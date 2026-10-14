@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "md-viewer",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server/serve.js"],
+      "port": 4317,
+      "autoPort": false
+    }
+  ]
+}
