@@ -1,0 +1,15 @@
+{
+  "name": "gbvdm-md-viewer",
+  "description": "Markdown viewer with Mermaid diagrams for Claude Code, by guilhermebvdm",
+  "owner": {
+    "name": "guilhermebvdm",
+    "url": "https://github.com/guilhermebvdm"
+  },
+  "plugins": [
+    {
+      "name": "md-viewer",
+      "source": "./",
+      "description": "Opens Markdown files in the Claude desktop app's Browser pane with Mermaid diagrams rendered, a folder list to move between files, and live reload when the file changes on disk."
+    }
+  ]
+}

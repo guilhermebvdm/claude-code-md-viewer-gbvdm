@@ -1,0 +1,13 @@
+{
+  "name": "md-viewer",
+  "version": "0.1.0",
+  "description": "Opens Markdown files in the Claude desktop app's Browser pane with Mermaid diagrams rendered, a folder list to move between files, and live reload when the file changes on disk.",
+  "author": {
+    "name": "guilhermebvdm",
+    "url": "https://github.com/guilhermebvdm"
+  },
+  "homepage": "https://github.com/guilhermebvdm/claude-code-md-viewer-gbvdm",
+  "repository": "https://github.com/guilhermebvdm/claude-code-md-viewer-gbvdm",
+  "license": "MIT",
+  "keywords": ["markdown", "mermaid", "diagram", "viewer", "preview"]
+}
