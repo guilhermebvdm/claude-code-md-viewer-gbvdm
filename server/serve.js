@@ -97,8 +97,9 @@ function handle(req, res, server) {
     case '/api/stop':
       // The custom header makes a browser on another site ask first (preflight), which this server never allows.
       if (req.method !== 'POST' || req.headers['x-md-viewer'] !== 'stop') return send(res, 405, 'text/plain', 'Not allowed');
-      sendJson(res, 200, { stopped: true });
-      return server.close(() => process.exit(0));
+      // Exits once the answer is sent: waiting for server.close() would wait for the open page's connection too.
+      res.on('finish', () => process.exit(0));
+      return sendJson(res, 200, { stopped: true });
 
     default:
       return send(res, 404, 'text/plain', 'Not found');
