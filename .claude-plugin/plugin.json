@@ -1,6 +1,6 @@
 {
   "name": "md-viewer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Opens Markdown files in the Claude desktop app's Browser pane with Mermaid diagrams rendered, a folder list to move between files, and live reload when the file changes on disk.",
   "author": {
     "name": "guilhermebvdm",

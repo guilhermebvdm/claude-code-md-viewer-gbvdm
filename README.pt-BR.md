@@ -7,7 +7,8 @@ Um visualizador de Markdown para o [Claude Code](https://code.claude.com/docs/en
 O que a página mostra:
 
 - o documento, com tabelas, blocos `<details>` e o HTML que o próprio `.md` tiver;
-- cada bloco ` ```mermaid ` renderizado, em tema escuro;
+- cada bloco ` ```mermaid ` renderizado, em tema escuro, na largura da área de leitura (um clique no diagrama alterna para o tamanho natural, com rolagem horizontal);
+- no lugar de um diagrama com erro de sintaxe, a mensagem do Mermaid com a linha e o motivo;
 - à esquerda, a lista de pastas e arquivos `.md` da pasta do documento, para abrir outro arquivo com um clique;
 - links entre documentos (`outro.md#secao`) que abrem o outro documento na seção certa, mesmo dentro de um `<details>` fechado;
 - o arquivo de novo, sozinho, até 2 segundos depois de você salvar uma alteração.
@@ -89,7 +90,8 @@ Leia antes de instalar: é código que roda com as suas permissões.
 
 ## Limites conhecidos
 
-- Diagrama largo aparece no tamanho natural, com rolagem horizontal dentro do bloco.
+- Diagrama muito largo, ao caber na largura, fica com letra pequena: clique nele para ver no tamanho natural.
+- Diagrama pequeno cresce até 1,5 vez o tamanho natural, e não ocupa a largura toda.
 - Sem internet, os diagramas não aparecem.
 - Arquivos que não são `.md` não abrem.
 

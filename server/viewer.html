@@ -21,13 +21,18 @@
   aside button.current { background: #1e3a5f; color: #dbeafe; }
   aside button.dir::before { content: "▸ "; color: var(--muted); }
   aside button.up { color: var(--muted); }
-  main { max-width: 1100px; width: 100%; margin: 0 auto; padding: 16px 24px 64px; }
+  main { min-width: 0; padding: 16px 24px 64px; }
   a { color: var(--accent); }
   h1, h2 { border-bottom: 1px solid var(--border); padding-bottom: .3em; }
   code { background: #1f2937; padding: .15em .35em; border-radius: 4px; font: 0.875em ui-monospace, Consolas, monospace; }
   pre { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow-x: auto; }
   pre code { background: none; padding: 0; }
-  pre.mermaid { text-align: center; }
+  pre.mermaid { text-align: center; cursor: zoom-in; }
+  pre.mermaid svg { width: 100%; height: auto; }
+  pre.mermaid.natural { cursor: zoom-out; }
+  .diagram-error { margin: 1em 0; }
+  .diagram-error pre { margin: 8px 0 0; white-space: pre-wrap; }
+  .diagram-error summary { cursor: pointer; margin-top: 8px; }
   table { border-collapse: collapse; display: block; overflow-x: auto; }
   th, td { border: 1px solid var(--border); padding: 6px 12px; text-align: left; vertical-align: top; }
   th { background: var(--panel); }
@@ -58,8 +63,8 @@
 <script>
   const POLL_MS = 2000;
   const TEXTS = {
-    pt: { open: 'Abrir', list: 'Lista', placeholder: 'Caminho de um arquivo .md ou de uma pasta', up: '.. pasta acima', pick: 'Escolha um arquivo .md na lista ao lado.', empty: 'Nenhum arquivo .md nem pasta aqui.' },
-    en: { open: 'Open', list: 'List', placeholder: 'Path of a .md file or a folder', up: '.. parent folder', pick: 'Pick a .md file in the list.', empty: 'No .md file or folder here.' },
+    pt: { open: 'Abrir', list: 'Lista', placeholder: 'Caminho de um arquivo .md ou de uma pasta', up: '.. pasta acima', pick: 'Escolha um arquivo .md na lista ao lado.', empty: 'Nenhum arquivo .md nem pasta aqui.', diagramError: 'Erro de sintaxe no diagrama Mermaid', diagramSource: 'Código do diagrama', zoom: 'Clique para alternar entre caber na largura e o tamanho natural' },
+    en: { open: 'Open', list: 'List', placeholder: 'Path of a .md file or a folder', up: '.. parent folder', pick: 'Pick a .md file in the list.', empty: 'No .md file or folder here.', diagramError: 'Mermaid syntax error', diagramSource: 'Diagram source', zoom: 'Click to switch between fit to width and natural size' },
   };
   const t = navigator.language.toLowerCase().startsWith('pt') ? TEXTS.pt : TEXTS.en;
 
@@ -71,16 +76,10 @@
   const pathInput = document.getElementById('path');
   let lastMtime = 0;
 
-  mermaid.initialize({
-    startOnLoad: false,
-    theme: 'dark',
-    securityLevel: 'strict',
-    flowchart: { useMaxWidth: false },
-    sequence: { useMaxWidth: false },
-    er: { useMaxWidth: false },
-    class: { useMaxWidth: false },
-    state: { useMaxWidth: false },
-  });
+  // A diagram fills the width of the reading area, growing to at most this many times its natural size.
+  const MAX_UPSCALE = 1.5;
+
+  mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'strict' });
 
   const api = (route, name, value) => fetch(`/api/${route}?${name}=${encodeURIComponent(value)}`).then(async (r) => ({ ok: r.ok, body: await r.json() }));
   const folderOf = (file) => file.replace(/[\\/][^\\/]*$/, '');
@@ -141,7 +140,45 @@
       if (!isExternal(target)) image.src = '/raw?file=' + encodeURIComponent(resolveRelative(target).path);
     });
 
-    await mermaid.run({ nodes: content.querySelectorAll('pre.mermaid'), suppressErrors: true });
+    await renderDiagrams();
+  }
+
+  // Shows Mermaid's own message (line and reason) in place of a diagram that does not parse.
+  function diagramError(source, message) {
+    const box = Object.assign(document.createElement('div'), { className: 'error diagram-error' });
+    const details = document.createElement('details');
+    details.append(Object.assign(document.createElement('summary'), { textContent: t.diagramSource }), Object.assign(document.createElement('pre'), { textContent: source }));
+    box.append(Object.assign(document.createElement('strong'), { textContent: t.diagramError }), Object.assign(document.createElement('pre'), { textContent: message }), details);
+    return box;
+  }
+
+  // Fits a diagram to the width of the reading area; a click switches to its natural size, with horizontal scrolling.
+  function fitToWidth(block) {
+    const svg = block.querySelector('svg');
+    const naturalWidth = svg.viewBox.baseVal.width;
+    if (!naturalWidth) return;
+    svg.removeAttribute('height');
+    svg.style.maxWidth = `${naturalWidth * MAX_UPSCALE}px`;
+    block.title = t.zoom;
+    block.addEventListener('click', () => {
+      const natural = block.classList.toggle('natural');
+      svg.style.width = natural ? `${naturalWidth}px` : '';
+      svg.style.maxWidth = natural ? 'none' : `${naturalWidth * MAX_UPSCALE}px`;
+    });
+  }
+
+  async function renderDiagrams() {
+    const valid = [];
+    for (const block of content.querySelectorAll('pre.mermaid')) {
+      try {
+        await mermaid.parse(block.textContent);
+        valid.push(block);
+      } catch (error) {
+        block.replaceWith(diagramError(block.textContent, String(error.message || error)));
+      }
+    }
+    await mermaid.run({ nodes: valid, suppressErrors: true });
+    valid.filter((block) => block.querySelector('svg')).forEach(fitToWidth);
   }
 
   async function renderList(dir) {

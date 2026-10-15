@@ -7,7 +7,8 @@ A Markdown viewer for [Claude Code](https://code.claude.com/docs/en/overview) th
 The page shows:
 
 - the document, with tables, `<details>` blocks and any HTML the `.md` itself contains;
-- every ` ```mermaid ` block rendered, in a dark theme;
+- every ` ```mermaid ` block rendered, in a dark theme, at the width of the reading area (a click on the diagram switches to its natural size, with horizontal scrolling);
+- in place of a diagram with a syntax error, Mermaid's message with the line and the reason;
 - on the left, the folders and `.md` files of the document's folder, to open another file with one click;
 - links between documents (`other.md#section`) that open the other document at the section, even inside a closed `<details>`;
 - the file again, by itself, within 2 seconds of a saved change.
@@ -89,7 +90,8 @@ Read this before installing: it is code that runs with your permissions.
 
 ## Known limits
 
-- A wide diagram is shown at its natural size, with horizontal scrolling inside its block.
+- A very wide diagram fitted to the width has small text: click it to see its natural size.
+- A small diagram grows up to 1.5 times its natural size, and does not take the whole width.
 - Without internet, diagrams are not shown.
 - Files other than `.md` do not open.
 
