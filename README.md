@@ -11,7 +11,21 @@ The page shows:
 - in place of a diagram with a syntax error, Mermaid's message with the line and the reason;
 - on the left, the folders and `.md` files of the document's folder, to open another file with one click;
 - links between documents (`other.md#section`) that open the other document at the section, even inside a closed `<details>`;
-- the file again, by itself, within 2 seconds of a saved change.
+- the file again, by itself, within 2 seconds of a saved change;
+- a search in the document, in the yellow field at the top, that ignores case and accents ("funcao" finds "função"), counts the results, opens the `<details>` blocks they are in, marks the edge of collapsed blocks that have results and also finds the text inside diagrams;
+- a filter for the file list;
+- document zoom, kept for the next time the page opens.
+
+### Shortcuts
+
+| Key | What it does |
+|---|---|
+| `Ctrl+F` or `/` | goes to the document search |
+| `Enter` / `Shift+Enter` | next / previous search result (also `F3` / `Shift+F3`) |
+| `Esc` | clears the search or the filter |
+| `Ctrl+P` | goes to the file list filter; `Enter` opens the first file of the filtered list |
+| `Ctrl` + mouse wheel, `Ctrl +`, `Ctrl −` | zooms the document in and out |
+| `Ctrl+0` | resets the zoom to 100% (so does the button with the percentage) |
 
 ## Requirements
 
@@ -94,6 +108,7 @@ Read this before installing: it is code that runs with your permissions.
 - A small diagram grows up to 1.5 times its natural size, and does not take the whole width.
 - Without internet, diagrams are not shown.
 - Files other than `.md` do not open.
+- The search does not find a passage whose formatting changes in the middle (part bold, part not).
 
 ## License
 

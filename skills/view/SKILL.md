@@ -34,9 +34,10 @@ If it prints an error instead, tell the user what it says. "Port 4317 is used by
 
 Then tell the user, in one or two lines, that the file is open and that they can:
 
+- search the document with `Ctrl+F`, and filter the file list with `Ctrl+P`;
+- zoom the document with `Ctrl` + mouse wheel (`Ctrl+0` resets it);
 - click the `.md` files and folders in the list on the left to open others, without asking you;
-- edit the file: the page reloads within 2 seconds of a save;
-- type another path in the field at the top.
+- edit the file: the page reloads within 2 seconds of a save.
 
 ## Stopping the server
 

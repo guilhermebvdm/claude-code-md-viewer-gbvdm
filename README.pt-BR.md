@@ -11,7 +11,21 @@ O que a página mostra:
 - no lugar de um diagrama com erro de sintaxe, a mensagem do Mermaid com a linha e o motivo;
 - à esquerda, a lista de pastas e arquivos `.md` da pasta do documento, para abrir outro arquivo com um clique;
 - links entre documentos (`outro.md#secao`) que abrem o outro documento na seção certa, mesmo dentro de um `<details>` fechado;
-- o arquivo de novo, sozinho, até 2 segundos depois de você salvar uma alteração.
+- o arquivo de novo, sozinho, até 2 segundos depois de você salvar uma alteração;
+- uma busca no documento, no campo amarelo do topo, que não diferencia maiúsculas nem acentos ("funcao" acha "função"), conta os resultados, abre os blocos `<details>` onde eles estão, marca na borda os blocos recolhidos que têm resultado e acha também o texto de dentro dos diagramas;
+- um filtro da lista de arquivos;
+- zoom do documento, que fica guardado para a próxima vez que a página abrir.
+
+### Atalhos
+
+| Tecla | O que faz |
+|---|---|
+| `Ctrl+F` ou `/` | vai para a busca no documento |
+| `Enter` / `Shift+Enter` | próximo / anterior resultado da busca (também `F3` / `Shift+F3`) |
+| `Esc` | limpa a busca ou o filtro |
+| `Ctrl+P` | vai para o filtro da lista de arquivos; `Enter` abre o primeiro arquivo da lista filtrada |
+| `Ctrl` + roda do mouse, `Ctrl +`, `Ctrl −` | aumenta e diminui o zoom do documento |
+| `Ctrl+0` | volta o zoom para 100% (o botão com a porcentagem faz o mesmo) |
 
 ## Requisitos
 
@@ -94,6 +108,7 @@ Leia antes de instalar: é código que roda com as suas permissões.
 - Diagrama pequeno cresce até 1,5 vez o tamanho natural, e não ocupa a largura toda.
 - Sem internet, os diagramas não aparecem.
 - Arquivos que não são `.md` não abrem.
+- A busca não acha um trecho que muda de formatação no meio (parte em negrito, parte não).
 
 ## Licença
 
